@@ -12,6 +12,8 @@ func main() {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
+
+	//Basic Authentication Header for simple security porpose
 	authPlugin := auth.NewBasicAuthenticator(SecretAuth, "Authorization Required")
 	beego.InsertFilter("*", beego.BeforeRouter,authPlugin)
 	beego.Run()

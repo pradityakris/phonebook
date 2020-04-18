@@ -27,9 +27,11 @@ func init() {
 	Phonebooks["hjkhsbnmn124"] = &Phonebook{"hjkhsbnmn124", "Bezoz", "021-1309", "Bandung Indonesia"}
 }
 
+//Model for add phonebook
 func AddPhonebook(phonebook Phonebook) (PhonebookId string) {
-	validate = validator.New()
 
+	//Validation for new phonebook request, with rules define in struct
+	validate = validator.New()
 	validate.RegisterTagNameFunc(func(fld reflect.StructField) string {
 		name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
 		if name == "-" {
@@ -37,7 +39,6 @@ func AddPhonebook(phonebook Phonebook) (PhonebookId string) {
 		}
 		return name
 	})
-
 	err := validate.Struct(phonebook)
 
 	if err != nil {
@@ -51,6 +52,7 @@ func AddPhonebook(phonebook Phonebook) (PhonebookId string) {
 	return phonebook.PhonebookId
 }
 
+//Model for get single phonebook with specific PhonebookID
 func GetPhonebook(PhonebookId string) (phonebook *Phonebook, err error) {
 	if v, ok := Phonebooks[PhonebookId]; ok {
 		return v, nil
@@ -58,10 +60,12 @@ func GetPhonebook(PhonebookId string) (phonebook *Phonebook, err error) {
 	return nil, errors.New("PhonebookId Not Exist")
 }
 
+//Model for get all phonebook
 func GetAllPhonebook() map[string]*Phonebook {
 	return Phonebooks
 }
 
+//Model for update phonebook name with specific PhonebookId
 func UpdatePhonebook(PhonebookId string, Name string) (err error) {
 	if v, ok := Phonebooks[PhonebookId]; ok {
 		v.Name = Name
@@ -70,6 +74,7 @@ func UpdatePhonebook(PhonebookId string, Name string) (err error) {
 	return errors.New("PhonebookId Not Exist")
 }
 
+//Model for delete phonebook with specific PhonebookId
 func DeletePhonebook(PhonebookId string) {
 	delete(Phonebooks, PhonebookId)
 }
